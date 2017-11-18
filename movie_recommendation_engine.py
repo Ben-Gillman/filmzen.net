@@ -35,7 +35,7 @@ def get_genomes(movie):
     return pd.read_sql_query(sql_string, con)
 
 
-def calculate_scores(ratings, genomes, movies_master):
+def calculate_scores(ratings, genomes, movies_master, num_top=10):
     scores = pd.merge(ratings, genomes, how='left', 
                       left_on=['ratedMovie', 'likedMovie'], 
                       right_on=['movieId', 'movieId2'])
@@ -45,8 +45,12 @@ def calculate_scores(ratings, genomes, movies_master):
     scores['score'] = max_score - scores['score']
     scores = pd.merge(scores, movies_master[['title', 'movieId']], 
                       left_on='ratedMovie', right_on='movieId')
-    return scores[["likedMovie", "ratedMovie", "title", "avgRating", 
+    scores = scores[["likedMovie", "ratedMovie", "title", "avgRating", 
                      "countRating", "similarity", "score"]]
+    return scores.sort_values('score', ascending=True)\
+                 .head(num_top)\
+                 .loc[:,'title']\
+                 .values
 
 if __name__ == '__main__':
     con = sqlite3.connect("C:\\Users\Ben\Documents\movie_recs\data.sqlite3")
@@ -64,7 +68,9 @@ if __name__ == '__main__':
     print("This cell took", (time.time() - start_time) / 60, "minutes to run")
 
     start_time = time.time()    
-    scores = calculate_scores(liked_rated, genome_similarity, movies_master)
+    title = movies_master.loc[movies_master['movieId']==movie, 'title'].values[0]
+    print("Top movies for {}:".format(title))
+    print(calculate_scores(liked_rated, genome_similarity, movies_master))
     print("This cell took", (time.time() - start_time) / 60, "minutes to run")
     
     
