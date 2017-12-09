@@ -75,6 +75,6 @@ movies_master.to_sql("movie_master", con, if_exists="replace", index=False)
 genome_similarity.to_sql("genome_similarity", con, if_exists="replace", index=False)
 ratings.to_sql("ratings", con, if_exists="replace", index=False)
 
-pd.read_sql_query("select * from movie_master;", con)
+pd.read_sql_query("select * from movie_master LIMIT 20;", con)
 pd.read_sql_query("select * from ratings LIMIT 20;", con)
 pd.read_sql_query("select * from genome_similarity LIMIT 20;", con)
