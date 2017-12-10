@@ -7,19 +7,23 @@
         <div class="row">
             <div class="col-md-3">
                 {{ wtf.quick_form(form) }}
-                {% if name %}
-                    {% if prev_like %}
-                        <h1>{{ movie_count }} other users liked {{ name }} too.</h1>
-                        <br>
-                        <h1> Top 3 movies for you since you like {{ name }}.</h1>
-                        <h1>{{ movie1 }}.</h1>
-                        <h1>{{ movie2 }}.</h1>
-                        <h1>{{ movie3 }}.</h1>
-                    {% else %}
-                        <h1>So hipster, no one else has liked {{ name }}.</h1>
-                    {% endif %}
-                {% endif %}
             </div>
+        </div>
+        <div class="row">            
+            {% if name %}
+                {% if prev_like %}
+                    <h1>{{ movie_count }} other users liked {{ name }} too.</h1>
+                    <h2> Top 3 movies for you since you like {{ name }}.</h2>
+
+                    <ul>
+                        <li>{{ movie1 }}</li>
+                        <li>{{ movie2 }}</li>
+                        <li>{{ movie3 }}</li>
+                    </ul>
+                {% else %}
+                    <h1>So hipster, no one else has liked {{ name }}.</h1>
+                {% endif %}
+            {% endif %}
         </div>
         <br>
         <br>
