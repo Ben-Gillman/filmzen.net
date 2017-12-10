@@ -4,6 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import Required, Length
 from flask_sqlalchemy import SQLAlchemy
+import movie_recommendation_engine as movrec
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'top secret'
@@ -41,6 +42,10 @@ def index():
     movie_form = MovieForm()
     prev_like = None
     movie_count = 0
+    top1 = None
+    top2 = None
+    top3 = None
+
     if movie_form.validate_on_submit(): #Becomes true when user pushes button
         movie_name = movie_form.name.data
         movie_form.name.data = ''
@@ -50,15 +55,26 @@ def index():
         db.session.add(UserInput(name=movie_name))
         db.session.commit()
 
+        movie_id = movrec.get_movie_id(movie_name, db.get_engine())
+        liked_rated = movrec.rating_similarity(movie_id, db.get_engine())
+        genome_similarity = movrec.get_genomes(movie_id, db.get_engine())
+        top_list = movrec.calculate_scores(liked_rated, genome_similarity, db.get_engine())
+        top1 = top_list[0]
+        top2 = top_list[1]
+        top3 = top_list[2]
+
     if 'count' not in session:
         session['count'] = 1
     else:
         session['count'] += 1
 
-    return render_template('index.html', form=movie_form, 
-                            name=movie_name, count=session['count'],
-                            prev_like=prev_like, movie_count=movie_count)    
+    # return render_template('index.html', form=movie_form, 
+    #                         name=movie_name, count=session['count'],
+    #                         prev_like=prev_like, movie_count=movie_count)    
 
+    return render_template('movie.html', form=movie_form, name=movie_name, count=session['count'],
+                            prev_like=prev_like, movie_count=movie_count, movie1 = top1, 
+                            movie2 = top2, movie3 = top3)
 
 @app.route('/movie-recs/')
 def movie_recs():

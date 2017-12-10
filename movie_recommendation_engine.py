@@ -99,7 +99,10 @@ if __name__ == '__main__':
     movies_master = pd.read_sql_query("select * from movie_master;", db.get_engine())
     title = movies_master.loc[movies_master['movieId']==movie, 'title'].values[0]
     print("Top movies for {}:".format(title))
+    top_movies = calculate_scores(liked_rated, genome_similarity, db.get_engine())
+    print(type(top_movies)) 
+    print(top_movies[0])
+    print(top_movies[1])
     print(calculate_scores(liked_rated, genome_similarity, db.get_engine()))
     print("This cell took", (time.time() - start_time) / 60, "minutes to run")
-    
     
