@@ -10,7 +10,7 @@ import time
 
 # gets movie id from given movie name 
 def get_movie_id(movie_name, con):
-    sql_string = "select movieId from movie_master where title = '{}';".format(movie_name)
+    sql_string = "select movieId from movie_master where title = '{}';".format(movie_name.replace("'", "''"))
     movieId = pd.read_sql_query(sql_string, con)
 
     if movieId.empty:
@@ -68,6 +68,23 @@ def calculate_scores(ratings, genomes, con, num_top=10):
                  .head(num_top)\
                  .loc[:,'title']\
                  .values
+
+
+# Cache results from search for use in the future rather than recalculating
+def cache_result(movieId, top_list, con):
+    row = [movieId]
+    row.extend([top_list[0],top_list[1],top_list[2]])
+    columns = ["movieId", "top1", "top2", "top3"]
+    result_df = pd.DataFrame([row], columns=columns)
+    result_df.to_sql("result_cache", con, if_exists="append", index=False)
+
+
+# Check and return data from the cache
+def return_cache_result(movieId, con):
+    sql_string = "select * from result_cache where movieId = {};".format(movieId)
+    df = pd.read_sql_query(sql_string, con)
+    return df
+
 
 if __name__ == '__main__':
     from flask import Flask

@@ -11,24 +11,19 @@
         </div>
         <div class="row">            
             {% if name %}
-                {% if prev_like %}
-                    <h1>{{ movie_count }} other users liked {{ name }} too.</h1>
-                    <h2> Top 3 movies for you since you like {{ name }}.</h2>
-
-                    <ul>
-                        <li>{{ movie1 }}</li>
-                        <li>{{ movie2 }}</li>
-                        <li>{{ movie3 }}</li>
-                    </ul>
-                {% else %}
-                    <h1>So hipster, no one else has liked {{ name }}.</h1>
-                {% endif %}
+                <h1>{{ movie_count }} other user(s) liked {{ name }}.</h1>
+                <h2> Top 3 movies for you since you like {{ name }}.</h2>
+                <ul>
+                    <li>{{ movie1 }}</li>
+                    <li>{{ movie2 }}</li>
+                    <li>{{ movie3 }}</li>
+                </ul>
             {% endif %}
         </div>
         <br>
         <br>
         <br>
         <br>
-        <p>You have visted this page {{ count }} times</p>
+        <p>You have visited this page {{ count }} times</p>
     </div>
 {% endblock %}

@@ -37,44 +37,39 @@ class MovieMaster(db.Model):
 
 
 @app.route('/', methods = ['GET', 'POST'])
-def index():
+def movie():
     movie_name = None
     movie_form = MovieForm()
-    prev_like = None
     movie_count = 0
-    top1 = None
-    top2 = None
-    top3 = None
+    top1, top2, top3 = None, None, None
 
     if movie_form.validate_on_submit(): #Becomes true when user pushes button
         movie_name = movie_form.name.data
         movie_form.name.data = ''
         movie_count = UserInput.query.filter_by(name=movie_name).count()
-        if movie_count > 0:
-            prev_like = 1
         db.session.add(UserInput(name=movie_name))
         db.session.commit()
 
         movie_id = movrec.get_movie_id(movie_name, db.get_engine())
-        liked_rated = movrec.rating_similarity(movie_id, db.get_engine())
-        genome_similarity = movrec.get_genomes(movie_id, db.get_engine())
-        top_list = movrec.calculate_scores(liked_rated, genome_similarity, db.get_engine())
-        top1 = top_list[0]
-        top2 = top_list[1]
-        top3 = top_list[2]
+        cache_result = movrec.return_cache_result(movie_id, db.get_engine())
+
+        if cache_result.empty:
+            liked_rated = movrec.rating_similarity(movie_id, db.get_engine())
+            genome_similarity = movrec.get_genomes(movie_id, db.get_engine())
+            top_list = movrec.calculate_scores(liked_rated, genome_similarity, db.get_engine())
+            movrec.cache_result(movie_id, top_list, db.get_engine())
+            top1, top2, top3 = top_list[0], top_list[1], top_list[2]
+        else:
+            top1, top2, top3 = cache_result.iloc[0,1], cache_result.iloc[0,2], cache_result.iloc[0,3]            
 
     if 'count' not in session:
         session['count'] = 1
     else:
-        session['count'] += 1
-
-    # return render_template('index.html', form=movie_form, 
-    #                         name=movie_name, count=session['count'],
-    #                         prev_like=prev_like, movie_count=movie_count)    
+        session['count'] += 1  
 
     return render_template('movie.html', form=movie_form, name=movie_name, count=session['count'],
-                            prev_like=prev_like, movie_count=movie_count, movie1 = top1, 
-                            movie2 = top2, movie3 = top3)
+                            movie_count=movie_count, movie1 = top1, movie2 = top2, movie3 = top3)
+
 
 @app.route('/movie-recs/')
 def movie_recs():

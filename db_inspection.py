@@ -17,7 +17,15 @@ cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
 print(cursor.fetchall())
 
 df = pd.read_sql_query("SELECT * from user_input", con)
+df2 = pd.read_sql_query("SELECT * from liked_users", con)
 
 
 
-# Create tables
+# Create table example 
+sql_string = "CREATE TABLE IF NOT EXISTS result_cache ("\
+             "movieId integer PRIMARY KEY," \
+             "top1 text NOT NULL," \
+             "top2 text NOT NULL," \
+             "top3 text NOT NULL );"
+
+cursor.execute(sql_string)
