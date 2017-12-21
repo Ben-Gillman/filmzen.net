@@ -1,0 +1,20 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %} Movie Recommendations {% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('movie') }}">Home</a>
+            <a class="navbar-brand" href="{{ url_for('movie_recs') }}">What movie should you watch next?</a>
+            <a class="navbar-brand" href="{{ url_for('the_future') }}">The future?</a>
+        </div>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        {% block page_content %}{% endblock %}
+    </div>
+{% endblock %}
