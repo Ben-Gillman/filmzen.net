@@ -7,17 +7,20 @@ Created on Fri Sep  8 19:55:15 2017
 
 import pandas as pd
 import time
+from fuzzywuzzy import process, fuzz
 
 # gets movie id from given movie name 
 def get_movie_id(movie_name, con):
-    sql_string = "select movieId from movie_master where title = '{}';".format(movie_name.replace("'", "''"))
-    movieId = pd.read_sql_query(sql_string, con)
-
-    if movieId.empty:
-        movieId = 0
-    else:
-        movieId = movieId.iloc[0,0]
-
+    sql_string = "select movieId, title from movie_master;"
+    movie_master = pd.read_sql_query(sql_string, con)
+    # TODO if no movie is found, prompt the user for another name 
+    movie_name = process.extractOne(movie_name.lower(), 
+                                    movie_master.iloc[:,1].str.lower(), 
+                                    scorer=fuzz.ratio,
+                                    score_cutoff=20)[0]
+    movieId = movie_master.loc[movie_master.loc[:,'title'].str.lower()==movie_name,'movieId']\
+                          .values[0]
+    
     return movieId
 
 
@@ -51,7 +54,7 @@ def get_genomes(movie, con):
 
 # Calculates similarity scores given genome and rating scores 
 def calculate_scores(ratings, genomes, con, num_top=10):
-    movies_master = pd.read_sql_query("select * from movie_master;", con)
+    movie_master = pd.read_sql_query("select * from movie_master;", con)
 
     scores = pd.merge(ratings, genomes, how='left', 
                       left_on=['ratedMovie', 'likedMovie'], 
@@ -60,7 +63,7 @@ def calculate_scores(ratings, genomes, con, num_top=10):
     scores['score'] = scores.avgRating / (scores.avgRating.max() * 10) + scores.similarity
     max_score = scores['score'].max()
     scores['score'] = max_score - scores['score']
-    scores = pd.merge(scores, movies_master[['title', 'movieId']], 
+    scores = pd.merge(scores, movie_master[['title', 'movieId']], 
                       left_on='ratedMovie', right_on='movieId')
     scores = scores[["likedMovie", "ratedMovie", "title", "avgRating", 
                      "countRating", "similarity", "score"]]
@@ -113,8 +116,8 @@ if __name__ == '__main__':
     print("This cell took", (time.time() - start_time) / 60, "minutes to run")
 
     start_time = time.time()    
-    movies_master = pd.read_sql_query("select * from movie_master;", db.get_engine())
-    title = movies_master.loc[movies_master['movieId']==movie, 'title'].values[0]
+    movie_master = pd.read_sql_query("select * from movie_master;", db.get_engine())
+    title = movie_master.loc[movie_master['movieId']==movie, 'title'].values[0]
     print("Top movies for {}:".format(title))
     top_movies = calculate_scores(liked_rated, genome_similarity, db.get_engine())
     print(type(top_movies)) 
