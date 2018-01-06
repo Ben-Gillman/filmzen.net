@@ -21,9 +21,12 @@
             {% endif %}
             {% if error %}
                 {% if name %}
-                    <h2> Sorry, no results for {{ name }}. Please try a searching for a different movie. <h2>
+                    <h2> Not enough data for {{ name }} to make a recommendation. <h2>
+                    <h2> Please try a searching for a different movie. <h2>
                 {% else %}
-                    <h2> Could not find the movie you were looking for, please try again. <h2>
+                    <h2> Could not find the movie you were looking for. <h2>
+                    <h2> It's possible the movie is too new to be in the database. <h2>
+                    <h2> Please try again. <h2>
                 {% endif %}
             {% endif %}
         </div>
