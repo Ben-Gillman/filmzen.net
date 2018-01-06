@@ -33,3 +33,5 @@ cursor.execute(sql_string)
 # Clear the cache
 sql_string = "DELETE FROM result_cache;"
 cursor.execute(sql_string)
+cursor.execute("SELECT * FROM result_cache;")
+print(cursor.fetchall())

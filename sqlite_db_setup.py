@@ -13,6 +13,18 @@ from sklearn.metrics.pairwise import cosine_similarity
 import time
 import sqlite3
 
+# Reverse ","" endings on movie names  
+def movie_name_cleanup(movie_name):
+    if movie_name.endswith(", A"):
+        movie_name = movie_name[-1] + " " + movie_name[:-3]
+    elif movie_name.endswith((", The", ", Les")):
+        movie_name = movie_name[-3:] + " " + movie_name[:-5]
+    elif movie_name.endswith(", An"):
+        movie_name = movie_name[-2:] + " " + movie_name[:-4]
+    elif movie_name.endswith(", L'"):
+        movie_name = movie_name[-2:] + movie_name[:-4]        
+    return movie_name
+
 data_dir = r"C:\Users\Ben\Documents\Data Sets\movielens_20m_dataset\\"
 
 
@@ -27,7 +39,7 @@ movies_master["year"] = movies_master.title.str[-6:]\
                                      .str.extract('(\d+)', expand=False)\
                                      .astype(float)
 movies_master["title"] = movies_master["title"].apply(lambda x: x.split("(")[0][:-1])
-
+movies_master["title"] = movies_master["title"].apply(movie_name_cleanup)
 
 # Find and filter out unpopular movies 
 popular_movies = ratings.groupby("movieId")\
