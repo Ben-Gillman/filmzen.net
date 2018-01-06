@@ -20,9 +20,12 @@ def get_movie_id(movie_name, con):
                                     score_cutoff=20)[0]
     movieId = movie_master.loc[movie_master.loc[:,'title'].str.lower()==movie_name,'movieId']\
                           .values[0]
-    
     return movieId
 
+def get_print_movie_name(movieId, con):
+    sql_string = "select title from movie_master where movieId = {};".format(movieId)
+    movie_name = pd.read_sql_query(sql_string, con)
+    return movie_name.values[0][0]
 
 # Gets rating of movies thats other people liked who also liked given movie
 def rating_similarity(movie, con):

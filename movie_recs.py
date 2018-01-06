@@ -39,6 +39,7 @@ class MovieMaster(db.Model):
 @app.route('/', methods = ['GET', 'POST'])
 def movie():
     movie_name = None
+    print_movie_name = None
     movie_form = MovieForm()
     movie_count = 0
     top1, top2, top3 = None, None, None
@@ -51,6 +52,7 @@ def movie():
         db.session.commit()
 
         movie_id = movrec.get_movie_id(movie_name, db.get_engine())
+        print_movie_name = movrec.get_print_movie_name(movie_id, db.get_engine())
         cache_result = movrec.return_cache_result(movie_id, db.get_engine())
 
         if cache_result.empty:
@@ -67,7 +69,7 @@ def movie():
     else:
         session['count'] += 1  
 
-    return render_template('movie.html', form=movie_form, name=movie_name, count=session['count'],
+    return render_template('movie.html', form=movie_form, name=print_movie_name, count=session['count'],
                             movie_count=movie_count, movie1 = top1, movie2 = top2, movie3 = top3)
 
 
