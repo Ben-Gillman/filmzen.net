@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="row">            
-            {% if name %}
+            {% if movie1 %}
                 <h1>{{ movie_count }} other user(s) liked {{ name }}.</h1>
                 <h2> Top 3 movies for you since you like {{ name }}.</h2>
                 <ul>
@@ -18,6 +18,13 @@
                     <li>{{ movie2 }}</li>
                     <li>{{ movie3 }}</li>
                 </ul>
+            {% endif %}
+            {% if error %}
+                {% if name %}
+                    <h2> Sorry, no results for {{ name }}. Please try a searching for a different movie. <h2>
+                {% else %}
+                    <h2> Could not find the movie you were looking for, please try again. <h2>
+                {% endif %}
             {% endif %}
         </div>
         <br>

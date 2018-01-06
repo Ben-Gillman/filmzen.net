@@ -29,3 +29,7 @@ sql_string = "CREATE TABLE IF NOT EXISTS result_cache ("\
              "top3 text NOT NULL );"
 
 cursor.execute(sql_string)
+
+# Clear the cache
+sql_string = "DELETE FROM result_cache;"
+cursor.execute(sql_string)

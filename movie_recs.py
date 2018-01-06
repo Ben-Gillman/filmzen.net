@@ -52,6 +52,9 @@ def movie():
         db.session.commit()
 
         movie_id = movrec.get_movie_id(movie_name, db.get_engine())
+        if movie_id == -1:
+            return render_template('movie.html', form=movie_form, error=True)
+
         print_movie_name = movrec.get_print_movie_name(movie_id, db.get_engine())
         cache_result = movrec.return_cache_result(movie_id, db.get_engine())
 
@@ -59,6 +62,8 @@ def movie():
             liked_rated = movrec.rating_similarity(movie_id, db.get_engine())
             genome_similarity = movrec.get_genomes(movie_id, db.get_engine())
             top_list = movrec.calculate_scores(liked_rated, genome_similarity, db.get_engine())
+            if len(top_list) < 3:
+                return render_template('movie.html', form=movie_form, name=print_movie_name, error=True)
             movrec.cache_result(movie_id, top_list, db.get_engine())
             top1, top2, top3 = top_list[0], top_list[1], top_list[2]
         else:

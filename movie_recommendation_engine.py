@@ -18,14 +18,19 @@ def get_movie_id(movie_name, con):
                                     movie_master.iloc[:,1].str.lower(), 
                                     scorer=fuzz.ratio,
                                     score_cutoff=20)[0]
+    if movie_name == None: return -1
+
     movieId = movie_master.loc[movie_master.loc[:,'title'].str.lower()==movie_name,'movieId']\
                           .values[0]
     return movieId
 
+
+# Use movieId to find the proper name of a movie 
 def get_print_movie_name(movieId, con):
     sql_string = "select title from movie_master where movieId = {};".format(movieId)
     movie_name = pd.read_sql_query(sql_string, con)
     return movie_name.values[0][0]
+
 
 # Gets rating of movies thats other people liked who also liked given movie
 def rating_similarity(movie, con):
@@ -70,11 +75,11 @@ def calculate_scores(ratings, genomes, con, num_top=10):
                       left_on='ratedMovie', right_on='movieId')
     scores = scores[["likedMovie", "ratedMovie", "title", "avgRating", 
                      "countRating", "similarity", "score"]]
-    return scores.sort_values('score', ascending=True)\
-                 .head(num_top)\
-                 .loc[:,'title']\
+    scores = scores.sort_values('score', ascending=True)\
+                   .drop_duplicates(subset=["title"])
+    return scores.head(num_top)\
+                 .loc[:,"title"]\
                  .values
-
 
 # Cache results from search for use in the future rather than recalculating
 def cache_result(movieId, top_list, con):
