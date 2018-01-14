@@ -32,6 +32,7 @@ data_dir = r"C:\Users\Ben\Documents\Data Sets\movielens_20m_dataset\\"
 movies_master = pd.read_csv(data_dir+"movie.csv")
 ratings = pd.read_csv(data_dir+"rating.csv")
 genome_scores = pd.read_csv(data_dir+'genome_scores.csv')
+link = pd.read_csv(data_dir+"link.csv")
 
 
 # Import and clean up movies master 
@@ -54,6 +55,8 @@ ratings = ratings[ratings["movieId"].isin(popular_movies["movieId"])]
 movies_master = movies_master[movies_master["movieId"]\
                               .isin(popular_movies["movieId"])]
 
+# add imdb link to movies master
+movies_master = pd.merge(movies_master, link.iloc[:,0:2], on="movieId")
 
 # Assign movies that were "liked" by users
 quartiles = ratings.groupby("movieId")\

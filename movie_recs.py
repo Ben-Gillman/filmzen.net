@@ -5,6 +5,7 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import Required, Length
 from flask_sqlalchemy import SQLAlchemy
 import movie_recommendation_engine as movrec
+import movie_scraping as movscrp
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'top secret'
@@ -43,6 +44,7 @@ def movie():
     movie_form = MovieForm()
     movie_count = 0
     top1, top2, top3 = None, None, None
+    poster1 = None
 
     if movie_form.validate_on_submit(): #Becomes true when user pushes button
         movie_name = movie_form.name.data
@@ -69,13 +71,17 @@ def movie():
         else:
             top1, top2, top3 = cache_result.iloc[0,1], cache_result.iloc[0,2], cache_result.iloc[0,3]            
 
+        imdb_id = movscrp.get_imdb_link(movie_id, db.get_engine())
+        poster1 = movscrp.get_movie_poster_link(imdb_id)
+
     if 'count' not in session:
         session['count'] = 1
     else:
         session['count'] += 1  
 
     return render_template('movie.html', form=movie_form, name=print_movie_name, count=session['count'],
-                            movie_count=movie_count, movie1 = top1, movie2 = top2, movie3 = top3)
+                            movie_count=movie_count, movie1=top1, movie2=top2, movie3=top3, 
+                            poster1=poster1)
 
 
 @app.route('/movie-recs/')
