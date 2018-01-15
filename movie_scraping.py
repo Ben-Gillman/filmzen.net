@@ -8,12 +8,15 @@ def get_imdb_link(movieId, con):
     return imdbId.values[0][0]
 
 
-def get_movie_poster_link(imdbId):
-    id_string = str(imdbId).zfill(7)
-    movie_link = "http://www.imdb.com/title/tt" + id_string + "/"
+def get_movie_poster_links(imdbIdContainer):
+    linkContainer = []
 
-    response = requests.get(movie_link)
-    soup = bs4.BeautifulSoup(response.text, "lxml")
-    return soup.select(".poster img")[0].attrs['src']
+    for imdbId in imdbIdContainer:
+        id_string = str(imdbId).zfill(7)
+        movie_link = "http://www.imdb.com/title/tt" + id_string + "/"
+        response = requests.get(movie_link)
+        soup = bs4.BeautifulSoup(response.text, "lxml")
+        img_link = soup.select(".poster img")[0].attrs['src']
+        linkContainer.append(img_link)
 
-
+    return linkContainer

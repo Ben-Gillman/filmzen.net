@@ -6,6 +6,7 @@ from wtforms.validators import Required, Length
 from flask_sqlalchemy import SQLAlchemy
 import movie_recommendation_engine as movrec
 import movie_scraping as movscrp
+import movie_caching as movcache
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'top secret'
@@ -44,7 +45,7 @@ def movie():
     movie_form = MovieForm()
     movie_count = 0
     top1, top2, top3 = None, None, None
-    poster1 = None
+    posters = [None, None, None]
 
     if movie_form.validate_on_submit(): #Becomes true when user pushes button
         movie_name = movie_form.name.data
@@ -58,21 +59,21 @@ def movie():
             return render_template('movie.html', form=movie_form, error=True)
 
         print_movie_name = movrec.get_print_movie_name(movie_id, db.get_engine())
-        cache_result = movrec.return_cache_result(movie_id, db.get_engine())
+        cache_result = movcache.return_cache_result(movie_id, db.get_engine())
 
         if cache_result.empty:
             liked_rated = movrec.rating_similarity(movie_id, db.get_engine())
             genome_similarity = movrec.get_genomes(movie_id, db.get_engine())
-            top_list = movrec.calculate_scores(liked_rated, genome_similarity, db.get_engine())
-            if len(top_list) < 3:
+            top_movies = movrec.calculate_scores(liked_rated, genome_similarity, db.get_engine())
+            if len(top_movies) < 3:
                 return render_template('movie.html', form=movie_form, name=print_movie_name, error=True)
-            movrec.cache_result(movie_id, top_list, db.get_engine())
-            top1, top2, top3 = top_list[0], top_list[1], top_list[2]
+            top1, top2, top3 = top_movies.iloc[0,2], top_movies.iloc[1,2], top_movies.iloc[2,2]
+            posters = movscrp.get_movie_poster_links(top_movies['imdbId'])
+            movcache.cache_result(top_movies, db.get_engine())
         else:
-            top1, top2, top3 = cache_result.iloc[0,1], cache_result.iloc[0,2], cache_result.iloc[0,3]            
+            top1, top2, top3 = cache_result.iloc[0,2], cache_result.iloc[1,2], cache_result.iloc[2,2]            
+            posters = movscrp.get_movie_poster_links(cache_result['imdbId'])
 
-        imdb_id = movscrp.get_imdb_link(movie_id, db.get_engine())
-        poster1 = movscrp.get_movie_poster_link(imdb_id)
 
     if 'count' not in session:
         session['count'] = 1
@@ -81,7 +82,7 @@ def movie():
 
     return render_template('movie.html', form=movie_form, name=print_movie_name, count=session['count'],
                             movie_count=movie_count, movie1=top1, movie2=top2, movie3=top3, 
-                            poster1=poster1)
+                            poster1=posters[0], poster2=posters[1], poster3=posters[2])
 
 
 @app.route('/movie-recs/')

@@ -8,6 +8,8 @@ Created on Fri Sep  8 19:55:15 2017
 import pandas as pd
 import time
 from fuzzywuzzy import process, fuzz
+import movie_scraping as movscrp
+
 
 # gets movie id from given movie name 
 def get_movie_id(movie_name, con):
@@ -60,6 +62,18 @@ def get_genomes(movie, con):
     return pd.read_sql_query(sql_string, con)
 
 
+def append_imdbIds(top_movies, con):
+    imdbIdContainer = []
+
+    for ratedMovie in top_movies.loc[:,'ratedMovie']:
+        imdbId = movscrp.get_imdb_link(ratedMovie, con)
+        print(imdbId)
+        imdbIdContainer.append(imdbId)
+
+    top_movies = top_movies.assign(imdbId=imdbIdContainer)
+    return top_movies
+
+
 # Calculates similarity scores given genome and rating scores 
 def calculate_scores(ratings, genomes, con, num_top=10):
     movie_master = pd.read_sql_query("select * from movie_master;", con)
@@ -77,24 +91,9 @@ def calculate_scores(ratings, genomes, con, num_top=10):
                      "countRating", "similarity", "score"]]
     scores = scores.sort_values('score', ascending=True)\
                    .drop_duplicates(subset=["title"])
-    return scores.head(num_top)\
-                 .loc[:,"title"]\
-                 .values
-
-# Cache results from search for use in the future rather than recalculating
-def cache_result(movieId, top_list, con):
-    row = [movieId]
-    row.extend([top_list[0],top_list[1],top_list[2]])
-    columns = ["movieId", "top1", "top2", "top3"]
-    result_df = pd.DataFrame([row], columns=columns)
-    result_df.to_sql("result_cache", con, if_exists="append", index=False)
-
-
-# Check and return data from the cache
-def return_cache_result(movieId, con):
-    sql_string = "select * from result_cache where movieId = {};".format(movieId)
-    df = pd.read_sql_query(sql_string, con)
-    return df
+    scores = scores.head(num_top)\
+                 .loc[:,["likedMovie","ratedMovie","title"]]
+    return append_imdbIds(scores, con)
 
 
 if __name__ == '__main__':
@@ -129,8 +128,8 @@ if __name__ == '__main__':
     print("Top movies for {}:".format(title))
     top_movies = calculate_scores(liked_rated, genome_similarity, db.get_engine())
     print(type(top_movies)) 
-    print(top_movies[0])
-    print(top_movies[1])
-    print(calculate_scores(liked_rated, genome_similarity, db.get_engine()))
+    # print(top_movies[0])
+    # print(top_movies[1])
+    # print(calculate_scores(liked_rated, genome_similarity, db.get_engine()))
     print("This cell took", (time.time() - start_time) / 60, "minutes to run")
     

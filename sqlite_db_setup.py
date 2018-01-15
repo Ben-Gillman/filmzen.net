@@ -93,3 +93,12 @@ ratings.to_sql("ratings", con, if_exists="replace", index=False)
 pd.read_sql_query("select * from movie_master LIMIT 20;", con)
 pd.read_sql_query("select * from ratings LIMIT 20;", con)
 pd.read_sql_query("select * from genome_similarity LIMIT 20;", con)
+
+
+# Create result_cache table 
+sql_string = "CREATE TABLE IF NOT EXISTS result_cache ("\
+             "likedMovie integer," \
+             "ratedMovie integer," \
+             "title text);"
+
+cursor.execute(sql_string)

@@ -16,18 +16,17 @@ cursor = con.cursor()
 cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
 print(cursor.fetchall())
 
-df = pd.read_sql_query("SELECT * from user_input", con)
+df = pd.read_sql_query("SELECT * from result_cache", con)
 df2 = pd.read_sql_query("SELECT * from liked_users", con)
 
 
 
 # Create table example 
 sql_string = "CREATE TABLE IF NOT EXISTS result_cache ("\
-             "movieId integer PRIMARY KEY," \
-             "top1 text NOT NULL," \
-             "top2 text NOT NULL," \
-             "top3 text NOT NULL );"
-
+             "likedMovie integer," \
+             "ratedMovie integer," \
+             "title text," \
+             "imdbId integer);"
 cursor.execute(sql_string)
 
 # Clear the cache
@@ -35,3 +34,11 @@ sql_string = "DELETE FROM result_cache;"
 cursor.execute(sql_string)
 cursor.execute("SELECT * FROM result_cache;")
 print(cursor.fetchall())
+
+# Drop a table 
+sql_string = "DROP TABLE result_cache;"
+cursor.execute(sql_string)
+
+# close connection to the db
+cursor.close()
+con.close()
