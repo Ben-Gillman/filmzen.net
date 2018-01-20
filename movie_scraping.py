@@ -14,6 +14,7 @@ def get_media_links(imdbIdContainer):
 
     for imdbId in imdbIdContainer:
         movie_container = []
+        movie_description = None
 
         # Get movie poster
         id_string = str(imdbId).zfill(7)
@@ -62,8 +63,10 @@ def get_media_links(imdbIdContainer):
                              [0]["videoUrl"]
             else:
                 video_link = None
+                movie_description = soup.select(".summary_text")[0].text
 
         movie_container.append(video_link)
+        movie_container.append(movie_description)
         link_container.append(movie_container)
 
 

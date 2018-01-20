@@ -20,6 +20,8 @@
                         <video height="auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();" poster = "http://clipart-library.com/images/5iRrBeART.png">
                          <source type="video/mp4" src= {{ trailer1 }}>
                         </video>
+                    {% else %}
+                        <p> {{ description1 }} </p>
                     {% endif %}
 
                     <li>{{ movie2 }}</li>
@@ -28,6 +30,8 @@
                         <video height="auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();" poster = "http://clipart-library.com/images/5iRrBeART.png">
                          <source type="video/mp4" src= {{ trailer2 }}>
                         </video>
+                    {% else %}
+                        <p> {{ description2 }} </p>
                     {% endif %}
 
                     <li>{{ movie3 }}</li>
@@ -36,6 +40,8 @@
                         <video height="auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();" poster = "http://clipart-library.com/images/5iRrBeART.png">
                          <source type="video/mp4" src= {{ trailer3 }}>
                         </video>
+                    {% else %}
+                        <p> {{ description3 }} </p>
                     {% endif %}
                 </ul>
             {% endif %}

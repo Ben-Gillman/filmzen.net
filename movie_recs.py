@@ -45,7 +45,7 @@ def movie():
     movie_form = MovieForm()
     movie_count = 0
     top1, top2, top3 = None, None, None
-    imdb_media = [["",""] for i in range(3)]
+    imdb_media = [[None,None,None] for i in range(3)]
 
     if movie_form.validate_on_submit(): #Becomes true when user pushes button
         movie_name = movie_form.name.data
@@ -83,7 +83,8 @@ def movie():
     return render_template('movie.html', form=movie_form, name=print_movie_name, count=session['count'],
                             movie_count=movie_count, movie1=top1, movie2=top2, movie3=top3, 
                             poster1=imdb_media[0][0], poster2=imdb_media[1][0], poster3=imdb_media[2][0],
-                            trailer1=imdb_media[0][1], trailer2=imdb_media[1][1], trailer3=imdb_media[2][1])
+                            trailer1=imdb_media[0][1], trailer2=imdb_media[1][1], trailer3=imdb_media[2][1],
+                            description1=imdb_media[0][2], description2=imdb_media[1][2], description3=imdb_media[2][2])
 
 
 @app.route('/movie-recs/')
