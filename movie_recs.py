@@ -87,14 +87,9 @@ def movie():
                             description1=imdb_media[0][2], description2=imdb_media[1][2], description3=imdb_media[2][2])
 
 
-@app.route('/movie-recs/')
-def movie_recs():
-    return render_template('movie_recs.html')
-
-
-@app.route('/the-future/')
-def the_future():
-    return render_template('the_future.html')
+@app.route('/about/')
+def about():
+    return render_template('about.html')
 
 
 @app.errorhandler(404)
