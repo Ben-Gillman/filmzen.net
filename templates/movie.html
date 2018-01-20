@@ -15,11 +15,22 @@
                 <h2> Top 3 movies for you since you like {{ name }}.</h2>
                 <ul>
                     <li>{{ movie1 }}</li>
-                    <img src= {{ poster1 }}>
+                    <img src = {{ poster1 }}>
+                    {% if trailer1 %}
+                        <video src = {{ trailer1 }}></video>
+                    {% endif %}
+                    
                     <li>{{ movie2 }}</li>
-                    <img src= {{ poster2 }}>
+                    <img src = {{ poster2 }}>
+                    {% if trailer2 %}
+                        <video src = {{ trailer2 }}></video>
+                    {% endif %}
+
                     <li>{{ movie3 }}</li>
-                    <img src= {{ poster3 }}>
+                    <img src = {{ poster3 }}>
+                    {% if trailer3 %}
+                        <video src = {{ trailer3 }}></video>
+                    {% endif %}
                 </ul>
             {% endif %}
             {% if error %}

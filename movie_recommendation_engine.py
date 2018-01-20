@@ -67,7 +67,6 @@ def append_imdbIds(top_movies, con):
 
     for ratedMovie in top_movies.loc[:,'ratedMovie']:
         imdbId = movscrp.get_imdb_link(ratedMovie, con)
-        print(imdbId)
         imdbIdContainer.append(imdbId)
 
     top_movies = top_movies.assign(imdbId=imdbIdContainer)

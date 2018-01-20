@@ -45,7 +45,7 @@ def movie():
     movie_form = MovieForm()
     movie_count = 0
     top1, top2, top3 = None, None, None
-    posters = [None, None, None]
+    imdb_media = [["",""] for i in range(3)]
 
     if movie_form.validate_on_submit(): #Becomes true when user pushes button
         movie_name = movie_form.name.data
@@ -68,11 +68,11 @@ def movie():
             if len(top_movies) < 3:
                 return render_template('movie.html', form=movie_form, name=print_movie_name, error=True)
             top1, top2, top3 = top_movies.iloc[0,2], top_movies.iloc[1,2], top_movies.iloc[2,2]
-            posters = movscrp.get_movie_poster_links(top_movies['imdbId'])
+            imdb_media = movscrp.get_media_links(top_movies['imdbId'])
             movcache.cache_result(top_movies, db.get_engine())
         else:
             top1, top2, top3 = cache_result.iloc[0,2], cache_result.iloc[1,2], cache_result.iloc[2,2]            
-            posters = movscrp.get_movie_poster_links(cache_result['imdbId'])
+            imdb_media = movscrp.get_media_links(cache_result['imdbId'])
 
 
     if 'count' not in session:
@@ -82,7 +82,8 @@ def movie():
 
     return render_template('movie.html', form=movie_form, name=print_movie_name, count=session['count'],
                             movie_count=movie_count, movie1=top1, movie2=top2, movie3=top3, 
-                            poster1=posters[0], poster2=posters[1], poster3=posters[2])
+                            poster1=imdb_media[0][0], poster2=imdb_media[1][0], poster3=imdb_media[2][0],
+                            trailer1=imdb_media[0][1], trailer2=imdb_media[1][1], trailer3=imdb_media[2][1])
 
 
 @app.route('/movie-recs/')
