@@ -25,10 +25,10 @@ def get_media_links(imdbIdContainer):
         movie_container.append(img_link)
 
         # Get trailer 
-        try:
-            playlist_link = soup.select(".slate a")[0].attrs['data-video']
+        playlist_link = soup.select(".slate a")
+        if playlist_link:
+            playlist_link = playlist_link[0].attrs['data-video']
             playlist_link = movie_link + "videoplayer/" + playlist_link
-
             response = requests.get(playlist_link)
             resp_text = response.text
 
@@ -42,8 +42,26 @@ def get_media_links(imdbIdContainer):
             video_key = [s for s in video_key if "vi" in s][0]
             video_link = list(page_data["videos"]["videoMetadata"][video_key]["encodings"])\
                          [0]["videoUrl"]
-        except:
-            video_link = None
+        else:
+            playlist_link = soup.select(".video_slate_last a")
+            if playlist_link:
+                playlist_link = playlist_link[0].attrs['data-video']
+                playlist_link = movie_link + "videoplayer/" + playlist_link
+                response = requests.get(playlist_link)
+                resp_text = response.text
+
+                json_key = "window.IMDbReactInitialState.push("
+                index_1 = resp_text.find(json_key)
+                index_2 = resp_text.find(");", index_1)
+                page_json = resp_text[index_1 + len(json_key):index_2]
+
+                page_data = json.loads(page_json)
+                video_key = page_data["videos"]["playlists"].keys()
+                video_key = [s for s in video_key if "vi" in s][0]
+                video_link = list(page_data["videos"]["videoMetadata"][video_key]["encodings"])\
+                             [0]["videoUrl"]
+            else:
+                video_link = None
 
         movie_container.append(video_link)
         link_container.append(movie_container)

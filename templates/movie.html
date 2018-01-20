@@ -17,19 +17,25 @@
                     <li>{{ movie1 }}</li>
                     <img src = {{ poster1 }}>
                     {% if trailer1 %}
-                        <video src = {{ trailer1 }}></video>
+                        <video height="auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();" poster = "http://clipart-library.com/images/5iRrBeART.png">
+                         <source type="video/mp4" src= {{ trailer1 }}>
+                        </video>
                     {% endif %}
-                    
+
                     <li>{{ movie2 }}</li>
                     <img src = {{ poster2 }}>
                     {% if trailer2 %}
-                        <video src = {{ trailer2 }}></video>
+                        <video height="auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();" poster = "http://clipart-library.com/images/5iRrBeART.png">
+                         <source type="video/mp4" src= {{ trailer2 }}>
+                        </video>
                     {% endif %}
 
                     <li>{{ movie3 }}</li>
                     <img src = {{ poster3 }}>
                     {% if trailer3 %}
-                        <video src = {{ trailer3 }}></video>
+                        <video height="auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();" poster = "http://clipart-library.com/images/5iRrBeART.png">
+                         <source type="video/mp4" src= {{ trailer3 }}>
+                        </video>
                     {% endif %}
                 </ul>
             {% endif %}
@@ -43,24 +49,6 @@
                     <h2> Please try again. <h2>
                 {% endif %}
             {% endif %}
-        </div>
-        <div class="row">
-            <video id="7" preload="auto" src="https://video-http.media-imdb.com/MV5BYzNmMjNhMzgtZDVjYi00NTJkLThmOTktYjc0NThlMWUzNTYyXkExMV5BbXA0XkFpbWRiLWV0cy10cmFuc2NvZGU@.mp4?Expires=1515725855&amp;Signature=UBDRmjP01DDxcsALMOfVMpUcesDKhq5T2rVz0EAXuIjBT8gcfaefQUYQQvLh18GjHBbGD5hq~UKUKxSkvVLTNx21gXfmr~CBYU0ARLRdzYQjLsf3mLH65D0-tt~eEazhVwY5losObtvHKU~ZnzetQxI-Z-YQdsu3pkZbNXjx6~I_&amp;Key-Pair-Id=APKAILW5I44IHKUN2DYA"></video>
-            <script> 
-                const video = document.querySelector('video') 
-                video.currentTime = 1
-
-                let isPlaying = false
-                video.addEventListener('click', event => {
-                    if (isPlaying) {
-                        video.pause()
-                    }
-                    else {
-                        video.play()
-                    }
-                    isPlaying = !isPlaying
-                })              
-            </script> 
         </div>
         <br>
         <br>
