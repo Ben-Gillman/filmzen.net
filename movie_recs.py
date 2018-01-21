@@ -7,18 +7,17 @@ from flask_sqlalchemy import SQLAlchemy
 import movie_recommendation_engine as movrec
 import movie_scraping as movscrp
 import movie_caching as movcache
+from config import Config
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'top secret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.sqlite3'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config.from_object(Config)
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 
 
 class MovieForm(FlaskForm):
-    name = StringField(label='What is your favorite movie?', 
-                             validators=[Required(), Length(1, 50)])
+    name = StringField(label='Enter a movie:', 
+                       validators=[Required(), Length(1, 50)])
     submit = SubmitField('Submit')
 
 
@@ -26,9 +25,6 @@ class UserInput(db.Model):
     __tablename__ = 'user_input'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), index=True, unique=False)
-
-    # def __repr__(self):
-    #     return '<Movie: {0}>'.format(self.name)
 
 
 class MovieMaster(db.Model):
