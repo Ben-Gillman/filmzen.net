@@ -1,5 +1,4 @@
 p {
-    color: blue;
     font-size: 16px;
 }
 
@@ -11,6 +10,19 @@ video {
     vertical-align: bottom;
 }
 
-.movie-form {
-    color: blue;    
+.control-label {
+    text-align: left;
+    display: block;
 }
+
+/*.movie-form {
+    text-align: center;
+}
+
+.welcome {
+    text-align: center;
+}
+
+.recommendation {
+    text-align: center;
+}*/

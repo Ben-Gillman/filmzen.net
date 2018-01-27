@@ -1,0 +1,11 @@
+body {
+    text-align: center;
+}
+
+.main {
+    display: block;
+    width: 85%;
+    max-width: 960px;
+    margin-right: auto;
+    margin-left: auto;
+}

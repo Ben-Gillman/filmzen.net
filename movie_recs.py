@@ -18,7 +18,7 @@ db = SQLAlchemy(app)
 class MovieForm(FlaskForm):
     name = StringField(label='Enter a movie:', 
                        validators=[Required(), Length(1, 50)])
-    submit = SubmitField('Submit')
+    submit = SubmitField(label='Find Movies')
 
 
 class UserInput(db.Model):

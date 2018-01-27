@@ -1,66 +1,96 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block page_content %}
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='movie.css') }}">
-    <h1>Welcome to Seemless Movies</h1>
-    <h3>Enter a movie below and receive 3 fresh recommendations!</h3>
-    <div class="movie-form">
-        <div class="col-md-3">
-            {{ wtf.quick_form(form) }}
-        </div>
+{% block page_content %}    
+  <div class="welcome">
+    <p>Welcome to Seemless Movies</p>
+  </div> <!-- END Welcome -->
+
+  <div clas="page-title">
+    <p>Enter a movie below and receive 3 fresh recommendations!</p>
+  </div> <!-- END page-title -->
+  
+  <div class="movie-form row">
+    <div class="col-md-12">
+      {{ wtf.quick_form(form) }}
     </div>
-    <div class="row">            
-        {% if movie1 %}
-            <h1>{{ movie_count }} other user(s) liked {{ name }}.</h1>
-            <h2> Top 3 movies for you since you like {{ name }}.</h2>
-            <ul>
-                <li>{{ movie1 }}</li>
-                <img src = {{ poster1 }}>
-                {% if trailer1 %}
-                    <video height="268" width = "auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();" poster = "http://clipart-library.com/images/5iRrBeART.png">
-                     <source type="video/mp4" src= {{ trailer1 }}>
-                    </video>
-                {% else %}
-                    <p> {{ description1 }} </p>
-                {% endif %}
-            <br>
-                <li>{{ movie2 }}</li>
-                <img src = {{ poster2 }}>
-                {% if trailer2 %}
-                    <video height="268" width = "auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();" poster = "http://clipart-library.com/images/5iRrBeART.png">
-                     <source type="video/mp4" src= {{ trailer2 }}>
-                    </video>
-                {% else %}
-                    <p> {{ description2 }} </p>
-                {% endif %}
-            <br>
-                <li>{{ movie3 }}</li>
-                <img src = {{ poster3 }}>
-                {% if trailer3 %}
-                    <video height="268" width = "auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();" poster = "http://clipart-library.com/images/5iRrBeART.png">
-                     <source type="video/mp4" src= {{ trailer3 }}>
-                    </video>
-                {% else %}
-                    <p> {{ description3 }} </p>
-                {% endif %}
-            </ul>
+  </div> <!-- END movie form -->
+
+  {% if movie1 %}
+    <div class="recommendation-intro">
+      <p> Top 3 movies for you since you like {{ name }}.</p>
+    </div> <!-- END recommendation-intro -->
+
+    <div class="recommendation row">            
+      <div class="title">
+        {{ movie1 }}
+      </div>
+      <div class="media"> 
+        <img src={{ poster1 }}>
+        {% if trailer1 %}
+          <video class="video" height="268" width = "auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();">
+          <source type="video/mp4" src={{ trailer1 }}>
+          </video>
+        {% else %}
+          <div class="description">
+            {{ description1 }}
+          </div> <!-- END recommendation 1 -->
         {% endif %}
-        {% if error %}
-            {% if name %}
-                <h2> Not enough data for {{ name }} to make a recommendation. <h2>
-                <h2> Please try a searching for a different movie. <h2>
-            {% else %}
-                <h2> Could not find the movie you were looking for. <h2>
-                <h2> It's possible the movie is too new to be in the database. <h2>
-                <h2> Please try again. <h2>
-            {% endif %}
+
+    <div class="recommendation row">            
+      <div class="title">
+        {{ movie2 }}
+      </div>
+      <div class="media"> 
+        <img src={{ poster2 }}>
+        {% if trailer2 %}
+          <video class="video" height="268" width = "auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();">
+          <source type="video/mp4" src={{ trailer2 }}>
+          </video>
+        {% else %}
+          <div class="description">
+            {{ description2 }}
+          </div> <!-- END recommendation 2 -->
         {% endif %}
-    </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <p>You have visited this page {{ count }} times</p>
+
+    <div class="recommendation row">            
+      <div class="title">
+        {{ movie3 }}
+      </div>
+      <div class="media"> 
+        <img src={{ poster3 }}>
+        {% if trailer3 %}
+          <video class="video" height="268" width = "auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();">
+          <source type="video/mp4" src={{ trailer3 }}>
+          </video>
+        {% else %}
+          <div class="description">
+            {{ description3 }}
+          </div> <!-- END recommendation 3 -->
+        {% endif %}
+        
+  {% endif %}
+
+  {% if error %}
+    {% if name %}
+      <div class="error row">
+        <p> Not enough data for {{ name }} to make a recommendation. <p>
+        <p> Please try a searching for a different movie. <p>
+      </div>
+    {% else %}
+      <div class="error row">
+        <p> Could not find the movie you were looking for. <p>
+        <p> It's possible the movie is too new to be in the database. <p>
+        <p> Please try again. <p>
+      </div> <!-- END ERROR MSG -->
+    {% endif %}
+  {% endif %}
+
+  <footer class="footer">
+    {% if movie1 %}
+      <p> {{ movie_count }} other user(s) liked {{ name }} </p>
+    {% endif %}
+      <p> You have visited this page {{ count }} times </p>
+  </footer> <!-- END footer -->
 
 {% endblock %}
