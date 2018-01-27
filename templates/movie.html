@@ -28,7 +28,7 @@
       <div class="media"> 
         <img src={{ poster1 }}>
         {% if trailer1 %}
-          <video class="video" height="268" width = "auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();">
+          <video class="video" height="268" width = "auto" controls="controls" preload="auto" poster="https://s3-ap-southeast-2.amazonaws.com/mindlabkids/user/3183/field_video/Olly%20%26%20Luka/00001.jpg" onclick="this.paused ? this.play() : this.pause();">
           <source type="video/mp4" src={{ trailer1 }}>
           </video>
         {% else %}
@@ -44,7 +44,7 @@
       <div class="media"> 
         <img src={{ poster2 }}>
         {% if trailer2 %}
-          <video class="video" height="268" width = "auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();">
+          <video class="video" height="268" width = "auto" controls="controls" preload="auto" poster="https://s3-ap-southeast-2.amazonaws.com/mindlabkids/user/3183/field_video/Olly%20%26%20Luka/00001.jpg" onclick="this.paused ? this.play() : this.pause();">
           <source type="video/mp4" src={{ trailer2 }}>
           </video>
         {% else %}
@@ -60,7 +60,7 @@
       <div class="media"> 
         <img src={{ poster3 }}>
         {% if trailer3 %}
-          <video class="video" height="268" width = "auto" controls="controls" preload="none" onclick="this.paused ? this.play() : this.pause();">
+          <video class="video" height="268" width = "auto" controls="controls" preload="auto" poster="https://s3-ap-southeast-2.amazonaws.com/mindlabkids/user/3183/field_video/Olly%20%26%20Luka/00001.jpg" onclick="this.paused ? this.play() : this.pause();">
           <source type="video/mp4" src={{ trailer3 }}>
           </video>
         {% else %}
@@ -68,7 +68,7 @@
             {{ description3 }}
           </div> <!-- END recommendation 3 -->
         {% endif %}
-        
+
   {% endif %}
 
   {% if error %}
