@@ -68,7 +68,8 @@ def get_media_links(imdbIdContainer):
         movie_container.append(video_link)
         movie_container.append(movie_description)
         link_container.append(movie_container)
-
+    
+    link_container = pd.DataFrame(link_container, columns = ["imdbPoster","imdbTrailer","imdbDesc"])
 
     return link_container
 

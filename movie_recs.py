@@ -8,6 +8,7 @@ import movie_recommendation_engine as movrec
 import movie_scraping as movscrp
 import movie_caching as movcache
 from config import Config
+import pandas as pd
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -40,8 +41,9 @@ def movie():
     print_movie_name = None
     movie_form = MovieForm()
     movie_count = 0
-    top1, top2, top3 = None, None, None
-    imdb_media = [[None,None,None] for i in range(3)]
+    # top1, top2, top3 = None, None, None
+    # imdb_media = [[None,None,None] for i in range(3)]
+    top_movies = movcache.get_empty_cache()
 
     if movie_form.validate_on_submit(): #Becomes true when user pushes button
         movie_name = movie_form.name.data
@@ -55,9 +57,15 @@ def movie():
             return render_template('movie.html', form=movie_form, error=True)
 
         print_movie_name = movrec.get_print_movie_name(movie_id, db.get_engine())
-        cache_result = movcache.return_cache_result(movie_id, db.get_engine())
+        top_movies = movcache.return_cache_result(movie_id, db.get_engine())
 
-        if cache_result.empty:
+        # print(top_movies)
+        # print(top_movies.shape)
+        # print(top_movies.dropna())
+        # print(top_movies.dropna().shape)
+        # print(top_movies.dropna().empty)
+        if (top_movies.empty or top_movies.iloc[0,0] == 0):
+            print("INFO: calculating new scores")
             liked_rated = movrec.rating_similarity(movie_id, db.get_engine())
             genome_similarity = movrec.get_genomes(movie_id, db.get_engine())
             top_movies = movrec.calculate_scores(liked_rated, genome_similarity, db.get_engine())
@@ -65,11 +73,14 @@ def movie():
                 return render_template('movie.html', form=movie_form, name=print_movie_name, error=True)
             top1, top2, top3 = top_movies.iloc[0,2], top_movies.iloc[1,2], top_movies.iloc[2,2]
             imdb_media = movscrp.get_media_links(top_movies['imdbId'])
+            top_movies = pd.concat([top_movies, imdb_media], axis=1)
+            top_movies = top_movies.drop('index', 1)
+            # top_movies.columns = ["likedMovie", "ratedMovie","title","imdbId","imdbPoster","imdbTrailer","imdbDesc"]
             movcache.cache_result(top_movies, db.get_engine())
-        else:
-            top1, top2, top3 = cache_result.iloc[0,2], cache_result.iloc[1,2], cache_result.iloc[2,2]            
-            imdb_media = movscrp.get_media_links(cache_result['imdbId'])
-
+        # else:
+        #     top1, top2, top3 = top_movies.iloc[0,2], top_movies.iloc[1,2], top_movies.iloc[2,2]            
+            
+            # imdb_media = movscrp.get_media_links(cache_result['imdbId'])
 
     if 'count' not in session:
         session['count'] = 1
@@ -77,10 +88,11 @@ def movie():
         session['count'] += 1  
 
     return render_template('movie.html', form=movie_form, name=print_movie_name, count=session['count'],
-                            movie_count=movie_count, movie1=top1, movie2=top2, movie3=top3, 
-                            poster1=imdb_media[0][0], poster2=imdb_media[1][0], poster3=imdb_media[2][0],
-                            trailer1=imdb_media[0][1], trailer2=imdb_media[1][1], trailer3=imdb_media[2][1],
-                            description1=imdb_media[0][2], description2=imdb_media[1][2], description3=imdb_media[2][2])
+                            movie_count=movie_count, 
+                            movie1=top_movies.iloc[0,2], movie2=top_movies.iloc[1,2], movie3=top_movies.iloc[2,2], 
+                            poster1=top_movies.iloc[0,4], poster2=top_movies.iloc[1,4], poster3=top_movies.iloc[2,4],
+                            trailer1=top_movies.iloc[0,5], trailer2=top_movies.iloc[1,5], trailer3=top_movies.iloc[2,5],
+                            description1=top_movies.iloc[0,6], description2=top_movies.iloc[1,6], description3=top_movies.iloc[2,6])
 
 
 @app.route('/about/')

@@ -10,3 +10,9 @@ def return_cache_result(movieId, con):
     sql_string = "select * from result_cache where likedMovie = {};".format(movieId)
     df = pd.read_sql_query(sql_string, con)
     return df
+
+
+# generate empty cache container
+def get_empty_cache():
+    empty_cache = pd.DataFrame(0, index=[0,1,2], columns=['0','1','2','3','4','5','6'])
+    return empty_cache

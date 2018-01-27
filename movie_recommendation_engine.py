@@ -92,6 +92,7 @@ def calculate_scores(ratings, genomes, con, num_top=10):
                    .drop_duplicates(subset=["title"])
     scores = scores.head(num_top)\
                  .loc[:,["likedMovie","ratedMovie","title"]]
+    scores.reset_index(inplace=True)             
     return append_imdbIds(scores, con)
 
 

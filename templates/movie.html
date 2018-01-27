@@ -16,7 +16,7 @@
     </div>
   </div> <!-- END movie form -->
 
-  {% if movie1 %}
+  {% if movie1 != 0 %}
     <div class="recommendation-intro">
       <p> Top 3 movies for you since you like {{ name }}.</p>
     </div> <!-- END recommendation-intro -->
@@ -27,7 +27,7 @@
       </div>
       <div class="media"> 
         <img src={{ poster1 }}>
-        {% if trailer1 %}
+        {% if trailer1 != 0 %}
           <video class="video" height="268" width = "auto" controls="controls" preload="auto" poster="https://s3-ap-southeast-2.amazonaws.com/mindlabkids/user/3183/field_video/Olly%20%26%20Luka/00001.jpg" onclick="this.paused ? this.play() : this.pause();">
           <source type="video/mp4" src={{ trailer1 }}>
           </video>
@@ -43,7 +43,7 @@
       </div>
       <div class="media"> 
         <img src={{ poster2 }}>
-        {% if trailer2 %}
+        {% if trailer2 != 0 %}
           <video class="video" height="268" width = "auto" controls="controls" preload="auto" poster="https://s3-ap-southeast-2.amazonaws.com/mindlabkids/user/3183/field_video/Olly%20%26%20Luka/00001.jpg" onclick="this.paused ? this.play() : this.pause();">
           <source type="video/mp4" src={{ trailer2 }}>
           </video>
@@ -59,7 +59,7 @@
       </div>
       <div class="media"> 
         <img src={{ poster3 }}>
-        {% if trailer3 %}
+        {% if trailer3 != 0 %}
           <video class="video" height="268" width = "auto" controls="controls" preload="auto" poster="https://s3-ap-southeast-2.amazonaws.com/mindlabkids/user/3183/field_video/Olly%20%26%20Luka/00001.jpg" onclick="this.paused ? this.play() : this.pause();">
           <source type="video/mp4" src={{ trailer3 }}>
           </video>
