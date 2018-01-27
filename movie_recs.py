@@ -34,15 +34,12 @@ class MovieMaster(db.Model):
     name = db.Column(db.String(50), index=True, unique=False)
 
 
-
 @app.route('/', methods = ['GET', 'POST'])
 def movie():
     movie_name = None
     print_movie_name = None
     movie_form = MovieForm()
     movie_count = 0
-    # top1, top2, top3 = None, None, None
-    # imdb_media = [[None,None,None] for i in range(3)]
     top_movies = movcache.get_empty_cache()
 
     if movie_form.validate_on_submit(): #Becomes true when user pushes button
@@ -59,11 +56,6 @@ def movie():
         print_movie_name = movrec.get_print_movie_name(movie_id, db.get_engine())
         top_movies = movcache.return_cache_result(movie_id, db.get_engine())
 
-        # print(top_movies)
-        # print(top_movies.shape)
-        # print(top_movies.dropna())
-        # print(top_movies.dropna().shape)
-        # print(top_movies.dropna().empty)
         if (top_movies.empty or top_movies.iloc[0,0] == 0):
             print("INFO: calculating new scores")
             liked_rated = movrec.rating_similarity(movie_id, db.get_engine())
@@ -75,12 +67,7 @@ def movie():
             imdb_media = movscrp.get_media_links(top_movies['imdbId'])
             top_movies = pd.concat([top_movies, imdb_media], axis=1)
             top_movies = top_movies.drop('index', 1)
-            # top_movies.columns = ["likedMovie", "ratedMovie","title","imdbId","imdbPoster","imdbTrailer","imdbDesc"]
             movcache.cache_result(top_movies, db.get_engine())
-        # else:
-        #     top1, top2, top3 = top_movies.iloc[0,2], top_movies.iloc[1,2], top_movies.iloc[2,2]            
-            
-            # imdb_media = movscrp.get_media_links(cache_result['imdbId'])
 
     if 'count' not in session:
         session['count'] = 1
