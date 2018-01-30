@@ -46,8 +46,6 @@ def movie():
         movie_name = movie_form.name.data
         movie_form.name.data = ''
         movie_count = UserInput.query.filter_by(name=movie_name).count()
-        db.session.add(UserInput(name=movie_name))
-        db.session.commit()
 
         movie_id = movrec.get_movie_id(movie_name, db.get_engine())
         if movie_id == -1:
@@ -56,23 +54,31 @@ def movie():
         print_movie_name = movrec.get_print_movie_name(movie_id, db.get_engine())
         top_movies = movcache.return_cache_result(movie_id, db.get_engine())
 
+        db.session.add(UserInput(name=print_movie_name))
+        db.session.commit()
+
         if (top_movies.empty or top_movies.iloc[0,0] == 0):
             print("INFO: calculating new scores")
             liked_rated = movrec.rating_similarity(movie_id, db.get_engine())
             genome_similarity = movrec.get_genomes(movie_id, db.get_engine())
             top_movies = movrec.calculate_scores(liked_rated, genome_similarity, db.get_engine())
             if len(top_movies) < 3:
-                return render_template('movie.html', form=movie_form, name=print_movie_name, error=True)
+                return render_template('movie.html', movie1=0, form=movie_form, 
+                                        name=print_movie_name, error=True, count=session['count'])
             top1, top2, top3 = top_movies.iloc[0,2], top_movies.iloc[1,2], top_movies.iloc[2,2]
             imdb_media = movscrp.get_media_links(top_movies['imdbId'])
             top_movies = pd.concat([top_movies, imdb_media], axis=1)
             top_movies = top_movies.drop('index', 1)
             movcache.cache_result(top_movies, db.get_engine())
 
+
+
     if 'count' not in session:
         session['count'] = 1
     else:
         session['count'] += 1  
+
+
 
     return render_template('movie.html', form=movie_form, name=print_movie_name, count=session['count'],
                             movie_count=movie_count, 

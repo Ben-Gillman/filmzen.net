@@ -16,7 +16,7 @@
     </div>
   </div> <!-- END movie form -->
 
-  {% if movie1 != 0 %}
+  {% if movie1 != 0 and movie1 != None %}
     <div class="recommendation-intro">
       <p> Top 3 movies for you since you like {{ name }}.</p>
     </div> <!-- END recommendation-intro -->
@@ -87,7 +87,7 @@
   {% endif %}
 
   <footer class="footer">
-    {% if movie1 %}
+    {% if movie1 != 0 and movie1 != None %}
       <p> {{ movie_count }} other user(s) liked {{ name }} </p>
     {% endif %}
       <p> You have visited this page {{ count }} times </p>
