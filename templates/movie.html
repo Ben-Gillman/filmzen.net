@@ -6,7 +6,7 @@
     <p>Welcome to Seemless Movies</p>
   </div> <!-- END Welcome -->
 
-  <div clas="page-title">
+  <div class="page-title">
     <p>Enter a movie below and receive 3 fresh recommendations!</p>
   </div> <!-- END page-title -->
   
@@ -15,6 +15,10 @@
       {{ wtf.quick_form(form) }}
     </div>
   </div> <!-- END movie form -->
+
+  <div>
+    <img class="loading-gif" src="https://media.giphy.com/media/l4FGmO3MZkGng9Bp6/giphy.gif">
+  </div>
 
   {% if movie1 != 0 and movie1 != None %}
     <div class="recommendation-intro">

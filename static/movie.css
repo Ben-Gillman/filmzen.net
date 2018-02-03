@@ -26,3 +26,11 @@ video {
 .recommendation {
     text-align: center;
 }*/
+
+.loading-gif {
+    display: none;
+}
+
+.loading-gif.is-submitted {
+    display: inline;
+}
