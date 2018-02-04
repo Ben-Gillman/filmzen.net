@@ -28,6 +28,10 @@ video {
     display: none;
 }
 
+.recommendation-intro.new-rec {
+    display: none;
+}
+
 .loading-gif {
     display: none;
 }
@@ -35,3 +39,11 @@ video {
 .loading-gif.is-submitted {
     display: inline;
 }
+
+/*.feedback-form {
+    display: none;
+}
+
+.feedback-form.is-submitted {
+    display: inline;
+}*/

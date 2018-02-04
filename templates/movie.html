@@ -85,11 +85,13 @@
     {% endif %}
   {% endif %}
 
+  {% if (movie1 != 0 and movie1 != None) or error %}
   <div class="feedback-form row">
     <div class="col-md-12">
       {{ wtf.quick_form(feedbackForm) }}
     </div>
   </div> <!-- END feedback form -->
+  {% endif %}
 
   <footer class="footer">
     {% if movie1 != 0 and movie1 != None %}
