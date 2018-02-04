@@ -51,21 +51,20 @@ def movie():
     if movie_form.submitMovie.data and movie_form.validate():
         movie_name = movie_form.movieName.data
         movie_form.movieName.data = ''
-        movie_count = UserInput.query.filter_by(likedMovie=movie_name).count()
+        session['movie_count'] = UserInput.query.filter_by(likedMovie=movie_name).count()
 
         movie_id = movrec.get_movie_id(movie_name, db.get_engine())
         if movie_id == -1:
             return render_template('movie.html', form=movie_form, error=True)
 
         print_movie_name = movrec.get_print_movie_name(movie_id, db.get_engine())
-        session['likedMovie'] = print_movie_name
+        session['print_movie_name'] = print_movie_name
         top_movies = movcache.return_cache_result(movie_id, db.get_engine())
 
         db.session.add(UserInput(likedMovie=print_movie_name))
         db.session.commit()
 
         if (top_movies.empty or top_movies.iloc[0,0] == 0):
-            print("INFO: calculating new scores")
             liked_rated = movrec.rating_similarity(movie_id, db.get_engine())
             genome_similarity = movrec.get_genomes(movie_id, db.get_engine())
             top_movies = movrec.calculate_scores(liked_rated, genome_similarity, db.get_engine())
@@ -86,12 +85,20 @@ def movie():
     if feedback_form.submitFeedback.data and feedback_form.validate():
         feedback_text = feedback_form.feedbackText.data
         feedback_form.feedbackText.data = ''
-        db.session.add(UserFeedback(likedMovie=session.get('likedMovie', None), feedback=feedback_text))
+        db.session.add(UserFeedback(likedMovie=session.get('print_movie_name', None), feedback=feedback_text))
         db.session.commit()
 
+        return render_template('movie.html', movieForm=movie_form, feedbackForm=feedback_form, likedMovie=session.get('print_movie_name', None), 
+                        count=session['count'], movie_count=session.get('movie_count', None),
+                        movie1=top_movies.iloc[0,2], movie2=top_movies.iloc[1,2], movie3=top_movies.iloc[2,2], 
+                        link1=top_movies.iloc[0,3], link2=top_movies.iloc[1,3], link3=top_movies.iloc[2,3], 
+                        poster1=top_movies.iloc[0,5], poster2=top_movies.iloc[1,5], poster3=top_movies.iloc[2,5],
+                        trailer1=top_movies.iloc[0,6], trailer2=top_movies.iloc[1,6], trailer3=top_movies.iloc[2,6],
+                        description1=top_movies.iloc[0,7], description2=top_movies.iloc[1,7], description3=top_movies.iloc[2,7])
 
-    return render_template('movie.html', movieForm=movie_form, feedbackForm=feedback_form, likedMovie=print_movie_name, count=session['count'],
-                            movie_count=movie_count, 
+
+    return render_template('movie.html', movieForm=movie_form, feedbackForm=feedback_form, likedMovie=session.get('print_movie_name', None), 
+                            count=session['count'], movie_count=session.get('movie_count', None),
                             movie1=top_movies.iloc[0,2], movie2=top_movies.iloc[1,2], movie3=top_movies.iloc[2,2], 
                             link1=top_movies.iloc[0,3], link2=top_movies.iloc[1,3], link3=top_movies.iloc[2,3], 
                             poster1=top_movies.iloc[0,5], poster2=top_movies.iloc[1,5], poster3=top_movies.iloc[2,5],
