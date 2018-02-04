@@ -17,21 +17,26 @@ db = SQLAlchemy(app)
 
 
 class MovieForm(FlaskForm):
-    name = StringField(label='Enter a movie:', 
+    movieName = StringField(label='Enter a movie:', 
                        validators=[Required(), Length(1, 50)])
-    submit = SubmitField(label='Find Movies')
+    submitMovie = SubmitField(label='Find Movies')
 
+class FeedbackForm(FlaskForm):
+    feedbackText = StringField(label='Happy with your recommendations? Not happy? Tell us about it!', 
+                       validators=[Required(), Length(1, 280)])
+    submitFeedback = SubmitField(label='Submit Review')
 
 class UserInput(db.Model):
     __tablename__ = 'user_input'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), index=True, unique=False)
+    likedMovie = db.Column(db.String(50), index=True, unique=False)
 
 
-class MovieMaster(db.Model):
-    __tablename__ = 'movie_master'
+class UserFeedback(db.Model):
+    __tablename__ = 'user_feedback'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), index=True, unique=False)
+    likedMovie = db.Column(db.String(50), index=True, unique=False) 
+    feedback = db.Column(db.String(280), index=True, unique=False)
 
 
 @app.route('/', methods = ['GET', 'POST'])
@@ -41,20 +46,22 @@ def movie():
     movie_form = MovieForm()
     movie_count = 0
     top_movies = movcache.get_empty_cache()
+    feedback_form = FeedbackForm()
 
-    if movie_form.validate_on_submit(): #Becomes true when user pushes button
-        movie_name = movie_form.name.data
-        movie_form.name.data = ''
-        movie_count = UserInput.query.filter_by(name=movie_name).count()
+    if movie_form.submitMovie.data and movie_form.validate():
+        movie_name = movie_form.movieName.data
+        movie_form.movieName.data = ''
+        movie_count = UserInput.query.filter_by(likedMovie=movie_name).count()
 
         movie_id = movrec.get_movie_id(movie_name, db.get_engine())
         if movie_id == -1:
             return render_template('movie.html', form=movie_form, error=True)
 
         print_movie_name = movrec.get_print_movie_name(movie_id, db.get_engine())
+        session['likedMovie'] = print_movie_name
         top_movies = movcache.return_cache_result(movie_id, db.get_engine())
 
-        db.session.add(UserInput(name=print_movie_name))
+        db.session.add(UserInput(likedMovie=print_movie_name))
         db.session.commit()
 
         if (top_movies.empty or top_movies.iloc[0,0] == 0):
@@ -76,7 +83,14 @@ def movie():
     else:
         session['count'] += 1  
 
-    return render_template('movie.html', form=movie_form, name=print_movie_name, count=session['count'],
+    if feedback_form.submitFeedback.data and feedback_form.validate():
+        feedback_text = feedback_form.feedbackText.data
+        feedback_form.feedbackText.data = ''
+        db.session.add(UserFeedback(likedMovie=session.get('likedMovie', None), feedback=feedback_text))
+        db.session.commit()
+
+
+    return render_template('movie.html', movieForm=movie_form, feedbackForm=feedback_form, likedMovie=print_movie_name, count=session['count'],
                             movie_count=movie_count, 
                             movie1=top_movies.iloc[0,2], movie2=top_movies.iloc[1,2], movie3=top_movies.iloc[2,2], 
                             link1=top_movies.iloc[0,3], link2=top_movies.iloc[1,3], link3=top_movies.iloc[2,3], 

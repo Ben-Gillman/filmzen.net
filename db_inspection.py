@@ -16,7 +16,7 @@ cursor = con.cursor()
 cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
 print(cursor.fetchall())
 
-df = pd.read_sql_query("SELECT * from result_cache", con)
+df = pd.read_sql_query("SELECT * from user_input", con)
 df2 = pd.read_sql_query("SELECT * from liked_users", con)
 
 
@@ -26,11 +26,11 @@ sql_string = "CREATE TABLE IF NOT EXISTS result_cache ("\
              "likedMovie integer," \
              "ratedMovie integer," \
              "title text," \
-             "linkTitle text,"
+             "linkTitle text,"\
              "imdbId integer,"\
              "imdbPoster text,"\
              "imdbTrailer text,"\
-             "imdbDesc text);"\
+             "imdbDesc text);"
 
 cursor.execute(sql_string)
 

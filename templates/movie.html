@@ -12,18 +12,18 @@
   
   <div class="movie-form row">
     <div class="col-md-12">
-      {{ wtf.quick_form(form) }}
+      {{ wtf.quick_form(movieForm) }}
     </div>
   </div> <!-- END movie form -->
 
   <div class="loading-gif row">
     <p> Finding the best movies for you...</p>
     <img src="https://media.giphy.com/media/kzVL1ZLuGfEfm/giphy.gif">
-  </div>
+  </div> <!-- END LOADING GIF -->
 
   {% if movie1 != 0 and movie1 != None %}
     <div class="recommendation-intro">
-      <p> Top 3 movies for you since you like {{ name }}.</p>
+      <p> Top 3 movies for you since you like {{ likedMovie }}.</p>
     </div> <!-- END recommendation-intro -->
 
     <div class="recommendation row">            
@@ -71,9 +71,9 @@
   {% endif %}
 
   {% if error %}
-    {% if name %}
+    {% if likedmovie %}
       <div class="error row">
-        <p> Not enough data for {{ name }} to make a recommendation. <p>
+        <p> Not enough data for {{ likedmovie }} to make a recommendation. <p>
         <p> Please try a searching for a different movie. <p>
       </div>
     {% else %}
@@ -85,9 +85,15 @@
     {% endif %}
   {% endif %}
 
+  <div class="feedback-form row">
+    <div class="col-md-12">
+      {{ wtf.quick_form(feedbackForm) }}
+    </div>
+  </div> <!-- END feedback form -->
+
   <footer class="footer">
     {% if movie1 != 0 and movie1 != None %}
-      <p> {{ movie_count }} other user(s) liked {{ name }} </p>
+      <p> {{ movie_count }} other user(s) liked {{ likedmovie }} </p>
     {% endif %}
       <p> You have visited this page {{ count }} times </p>
   </footer> <!-- END footer -->
