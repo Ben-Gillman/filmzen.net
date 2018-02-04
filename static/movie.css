@@ -21,11 +21,12 @@ video {
 
 .welcome {
     text-align: center;
-}
-
-.recommendation {
-    text-align: center;
 }*/
+
+
+.recommendation.new-rec {
+    display: none;
+}
 
 .loading-gif {
     display: none;

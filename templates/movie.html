@@ -26,13 +26,13 @@
     </div> <!-- END recommendation-intro -->
 
     <div class="recommendation row">            
-      <div class="title">
+      <p class="title">
         {{ movie1 }}
-      </div>
+      </p>
       <div class="media"> 
-        <img src={{ poster1 }}>
+        <img class="poster" src={{ poster1 }}>
         {% if trailer1 != 0 and trailer1 != None %}
-          <video class="video" height="268" width = "auto" controls="controls" preload="auto" poster="https://s3-ap-southeast-2.amazonaws.com/mindlabkids/user/3183/field_video/Olly%20%26%20Luka/00001.jpg" onclick="this.paused ? this.play() : this.pause();">
+          <video class="trailer" height="268" width = "auto" controls="controls" preload="auto" poster="https://s3-ap-southeast-2.amazonaws.com/mindlabkids/user/3183/field_video/Olly%20%26%20Luka/00001.jpg" onclick="this.paused ? this.play() : this.pause();">
           <source type="video/mp4" src={{ trailer1 }}>
           </video>
         {% else %}
@@ -42,13 +42,13 @@
         {% endif %}
 
     <div class="recommendation row">            
-      <div class="title">
+      <p class="title">
         {{ movie2 }}
-      </div>
+      </p>
       <div class="media"> 
-        <img src={{ poster2 }}>
+        <img class="poster" src={{ poster2 }}>
         {% if trailer2 != 0 and trailer2 != None %}
-          <video class="video" height="268" width = "auto" controls="controls" preload="auto" poster="https://s3-ap-southeast-2.amazonaws.com/mindlabkids/user/3183/field_video/Olly%20%26%20Luka/00001.jpg" onclick="this.paused ? this.play() : this.pause();">
+          <video class="trailer" height="268" width = "auto" controls="controls" preload="auto" poster="https://s3-ap-southeast-2.amazonaws.com/mindlabkids/user/3183/field_video/Olly%20%26%20Luka/00001.jpg" onclick="this.paused ? this.play() : this.pause();">
           <source type="video/mp4" src={{ trailer2 }}>
           </video>
         {% else %}
