@@ -26,10 +26,12 @@ sql_string = "CREATE TABLE IF NOT EXISTS result_cache ("\
              "likedMovie integer," \
              "ratedMovie integer," \
              "title text," \
+             "linkTitle text,"
              "imdbId integer,"\
              "imdbPoster text,"\
              "imdbTrailer text,"\
-             "imdbDesc text);"
+             "imdbDesc text);"\
+
 cursor.execute(sql_string)
 
 # Clear the cache

@@ -16,8 +16,9 @@
     </div>
   </div> <!-- END movie form -->
 
-  <div>
-    <img class="loading-gif" src="https://media.giphy.com/media/l4FGmO3MZkGng9Bp6/giphy.gif">
+  <div class="loading-gif row">
+    <p> Finding the best movies for you...</p>
+    <img src="https://media.giphy.com/media/kzVL1ZLuGfEfm/giphy.gif">
   </div>
 
   {% if movie1 != 0 and movie1 != None %}
@@ -26,9 +27,7 @@
     </div> <!-- END recommendation-intro -->
 
     <div class="recommendation row">            
-      <p class="title">
-        {{ movie1 }}
-      </p>
+      <a class="title" target="_blank" href={{ link1 }}>{{ movie1 }}</a>
       <div class="media"> 
         <img class="poster" src={{ poster1 }}>
         {% if trailer1 != 0 and trailer1 != None %}
@@ -42,9 +41,7 @@
         {% endif %}
 
     <div class="recommendation row">            
-      <p class="title">
-        {{ movie2 }}
-      </p>
+      <a class="title" target="_blank" href={{ link2 }}>{{ movie2 }}</a>
       <div class="media"> 
         <img class="poster" src={{ poster2 }}>
         {% if trailer2 != 0 and trailer2 != None %}
@@ -58,9 +55,7 @@
         {% endif %}
 
     <div class="recommendation row">            
-      <div class="title">
-        {{ movie3 }}
-      </div>
+      <a class="title" target="_blank" href={{ link3 }}>{{ movie3 }}</a>
       <div class="media"> 
         <img src={{ poster3 }}>
         {% if trailer3 != 0 and trailer3 != None %}

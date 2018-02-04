@@ -71,21 +71,18 @@ def movie():
             top_movies = top_movies.drop('index', 1)
             movcache.cache_result(top_movies, db.get_engine())
 
-
-
     if 'count' not in session:
         session['count'] = 1
     else:
         session['count'] += 1  
 
-
-
     return render_template('movie.html', form=movie_form, name=print_movie_name, count=session['count'],
                             movie_count=movie_count, 
                             movie1=top_movies.iloc[0,2], movie2=top_movies.iloc[1,2], movie3=top_movies.iloc[2,2], 
-                            poster1=top_movies.iloc[0,4], poster2=top_movies.iloc[1,4], poster3=top_movies.iloc[2,4],
-                            trailer1=top_movies.iloc[0,5], trailer2=top_movies.iloc[1,5], trailer3=top_movies.iloc[2,5],
-                            description1=top_movies.iloc[0,6], description2=top_movies.iloc[1,6], description3=top_movies.iloc[2,6])
+                            link1=top_movies.iloc[0,3], link2=top_movies.iloc[1,3], link3=top_movies.iloc[2,3], 
+                            poster1=top_movies.iloc[0,5], poster2=top_movies.iloc[1,5], poster3=top_movies.iloc[2,5],
+                            trailer1=top_movies.iloc[0,6], trailer2=top_movies.iloc[1,6], trailer3=top_movies.iloc[2,6],
+                            description1=top_movies.iloc[0,7], description2=top_movies.iloc[1,7], description3=top_movies.iloc[2,7])
 
 
 @app.route('/about/')

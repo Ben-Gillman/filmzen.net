@@ -14,5 +14,5 @@ def return_cache_result(movieId, con):
 
 # generate empty cache container
 def get_empty_cache():
-    empty_cache = pd.DataFrame(0, index=[0,1,2], columns=['0','1','2','3','4','5','6'])
+    empty_cache = pd.DataFrame(0, index=[0,1,2], columns=['0','1','2','3','4','5','6','7'])
     return empty_cache
