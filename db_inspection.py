@@ -17,7 +17,7 @@ cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
 print(cursor.fetchall())
 
 df = pd.read_sql_query("SELECT * from user_input", con)
-df2 = pd.read_sql_query("SELECT * from liked_users", con)
+df2 = pd.read_sql_query("SELECT * from user_feedback", con)
 
 
 

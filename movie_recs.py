@@ -17,9 +17,10 @@ db = SQLAlchemy(app)
 
 
 class MovieForm(FlaskForm):
-    movieName = StringField(label='Enter a movie:', 
-                       validators=[Required(), Length(1, 50)])
-    submitMovie = SubmitField(label='Find Movies')
+    movieName = StringField(label='', 
+                       validators=[Required(), Length(1, 50)],
+                       render_kw={'placeholder': 'Enter a movie...'})
+    submitMovie = SubmitField(label='Get Recommendations')
 
 class FeedbackForm(FlaskForm):
     feedbackText = StringField(label='Happy with your recommendations? Not happy? Tell us about it!', 

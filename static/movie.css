@@ -40,10 +40,10 @@ video {
     display: inline;
 }
 
-/*.feedback-form {
+#feedback-thanks {
     display: none;
 }
 
-.feedback-form.is-submitted {
+#feedback-thanks.is-submitted {
     display: inline;
-}*/
+}
