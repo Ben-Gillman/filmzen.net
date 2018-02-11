@@ -18,13 +18,14 @@ db = SQLAlchemy(app)
 
 class MovieForm(FlaskForm):
     movieName = StringField(label='', 
-                       validators=[Required(), Length(1, 50)],
-                       render_kw={'placeholder': 'Enter a movie...'})
+                            validators=[Required(), Length(1, 50)],
+                            render_kw={'placeholder': 'Enter a movie...'})
     submitMovie = SubmitField(label='Get Recommendations')
 
 class FeedbackForm(FlaskForm):
     feedbackText = StringField(label='Happy with your recommendations? Not happy? Tell us about it!', 
-                       validators=[Required(), Length(1, 280)])
+                               validators=[Required(), Length(1, 280)],
+                               render_kw={'placeholder': 'Enter feedback...'})
     submitFeedback = SubmitField(label='Submit Review')
 
 class UserInput(db.Model):
@@ -43,7 +44,6 @@ class UserFeedback(db.Model):
 @app.route('/', methods = ['GET', 'POST'])
 def movie():
     movie_name = None
-    print_movie_name = None
     movie_form = MovieForm()
     movie_count = 0
     top_movies = movcache.get_empty_cache()
@@ -58,11 +58,10 @@ def movie():
         if movie_id == -1:
             return render_template('movie.html', form=movie_form, error=True)
 
-        print_movie_name = movrec.get_print_movie_name(movie_id, db.get_engine())
-        session['print_movie_name'] = print_movie_name
+        session['print_movie_name'] = movrec.get_print_movie_name(movie_id, db.get_engine())
         top_movies = movcache.return_cache_result(movie_id, db.get_engine())
 
-        db.session.add(UserInput(likedMovie=print_movie_name))
+        db.session.add(UserInput(likedMovie=session.get('print_movie_name', None)))
         db.session.commit()
 
         if (top_movies.empty or top_movies.iloc[0,0] == 0):
@@ -71,7 +70,7 @@ def movie():
             top_movies = movrec.calculate_scores(liked_rated, genome_similarity, db.get_engine())
             if len(top_movies) < 3:
                 return render_template('movie.html', movie1=0, form=movie_form, 
-                                        name=print_movie_name, error=True, count=session['count'])
+                                        name=session.get('print_movie_name', None), error=True, count=session['count'])
             top1, top2, top3 = top_movies.iloc[0,2], top_movies.iloc[1,2], top_movies.iloc[2,2]
             imdb_media = movscrp.get_media_links(top_movies['imdbId'])
             top_movies = pd.concat([top_movies, imdb_media], axis=1)
