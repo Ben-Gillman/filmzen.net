@@ -37,8 +37,10 @@
         {% else %}
           <div class="description">
             {{ description1 }}
-          </div> <!-- END recommendation 1 -->
+          </div> 
         {% endif %}
+      </div>
+    </div> <!-- END recommendation 1 -->
 
     <div class="recommendation row">            
       <a class="title" target="_blank" href={{ link2 }}>{{ movie2 }}</a>
@@ -51,8 +53,10 @@
         {% else %}
           <div class="description">
             {{ description2 }}
-          </div> <!-- END recommendation 2 -->
+          </div>
         {% endif %}
+      </div>
+    </div> <!-- END recommendation 2 -->
 
     <div class="recommendation row">            
       <a class="title" target="_blank" href={{ link3 }}>{{ movie3 }}</a>
@@ -65,32 +69,34 @@
         {% else %}
           <div class="description">
             {{ description3 }}
-          </div> <!-- END recommendation 3 -->
+          </div>
         {% endif %}
+      </div>
+    </div> <!-- END recommendation 3 -->
 
   {% endif %}
 
   {% if error %}
     {% if likedmovie %}
       <div class="error row">
-        <p> Not enough data for {{ likedmovie }} to make a recommendation. <p>
-        <p> Please try a searching for a different movie. <p>
+        <p> Not enough data for {{ likedmovie }} to make a recommendation. </p>
+        <p> Please try a searching for a different movie. </p>
       </div>
     {% else %}
       <div class="error row">
-        <p> Could not find the movie you were looking for. <p>
-        <p> It's possible the movie is too new to be in the database. <p>
-        <p> Please try again. <p>
+        <p> Could not find the movie you were looking for. </p>
+        <p> It's possible the movie is too new to be in the database. </p>
+        <p> Please try again. </p>
       </div> <!-- END ERROR MSG -->
     {% endif %}
   {% endif %}
 
   {% if (movie1 != 0 and movie1 != None) or error %}
-  <div class="feedback-form row">
-    <div class="col-md-12">
-      {{ wtf.quick_form(feedbackForm) }}
-    </div>
-  </div> <!-- END feedback form -->
+    <div class="feedback-form row">
+      <div class="col-md-12">
+        {{ wtf.quick_form(feedbackForm) }}
+      </div>
+    </div> <!-- END feedback form -->
   {% endif %}
 
   <div id="feedback-thanks">
@@ -99,7 +105,7 @@
 
   <footer class="footer">
     {% if movie1 != 0 and movie1 != None %}
-      <p> {{ movie_count }} other user(s) liked {{ likedmovie }} </p>
+      <p> {{ movie_count }} other user(s) liked {{ likedmovie }}. </p>
     {% endif %}
       <p> You have visited this page {{ count }} times </p>
   </footer> <!-- END footer -->
