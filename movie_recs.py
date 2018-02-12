@@ -77,18 +77,14 @@ def movie():
             top_movies = top_movies.drop('index', 1)
             movcache.cache_result(top_movies, db.get_engine())
 
-            return render_template('movie.html', movieForm=movie_form, feedbackForm=feedback_form, likedMovie=session.get('print_movie_name', None), 
-                count=session['count'], movie_count=session.get('movie_count', None),
+            return render_template('movie.html', movieForm=movie_form, feedbackForm=feedback_form, 
+                likedMovie=session.get('print_movie_name', None), movie_count=session.get('movie_count', None),
                 movie1=top_movies.iloc[0,2], movie2=top_movies.iloc[1,2], movie3=top_movies.iloc[2,2], 
                 link1=top_movies.iloc[0,3], link2=top_movies.iloc[1,3], link3=top_movies.iloc[2,3], 
                 poster1=top_movies.iloc[0,5], poster2=top_movies.iloc[1,5], poster3=top_movies.iloc[2,5],
                 trailer1=top_movies.iloc[0,6], trailer2=top_movies.iloc[1,6], trailer3=top_movies.iloc[2,6],
                 description1=top_movies.iloc[0,7], description2=top_movies.iloc[1,7], description3=top_movies.iloc[2,7])
 
-    if 'count' not in session:
-        session['count'] = 1
-    else:
-        session['count'] += 1  
 
     if feedback_form.submitFeedback.data and feedback_form.validate():
         feedback_text = feedback_form.feedbackText.data
@@ -96,8 +92,8 @@ def movie():
         db.session.add(UserFeedback(likedMovie=session.get('print_movie_name', None), feedback=feedback_text))
         db.session.commit()
 
-        # return render_template('movie.html', movieForm=movie_form, feedbackForm=feedback_form, likedMovie=session.get('print_movie_name', None), 
-        #                 count=session['count'], movie_count=session.get('movie_count', None),
+        # return render_template('movie.html', movieForm=movie_form, feedbackForm=feedback_form, 
+                        # likedMovie=session.get('print_movie_name', None), movie_count=session.get('movie_count', None),
         #                 movie1=top_movies.iloc[0,2], movie2=top_movies.iloc[1,2], movie3=top_movies.iloc[2,2], 
         #                 link1=top_movies.iloc[0,3], link2=top_movies.iloc[1,3], link3=top_movies.iloc[2,3], 
         #                 poster1=top_movies.iloc[0,5], poster2=top_movies.iloc[1,5], poster3=top_movies.iloc[2,5],
@@ -105,8 +101,8 @@ def movie():
         #                 description1=top_movies.iloc[0,7], description2=top_movies.iloc[1,7], description3=top_movies.iloc[2,7])
 
 
-    return render_template('movie.html', movieForm=movie_form, feedbackForm=feedback_form, likedMovie=session.get('print_movie_name', None), 
-                            count=session['count'], movie_count=session.get('movie_count', None),
+    return render_template('movie.html', movieForm=movie_form, feedbackForm=feedback_form, 
+                            likedMovie=session.get('print_movie_name', None), movie_count=session.get('movie_count', None),
                             movie1=top_movies.iloc[0,2], movie2=top_movies.iloc[1,2], movie3=top_movies.iloc[2,2], 
                             link1=top_movies.iloc[0,3], link2=top_movies.iloc[1,3], link3=top_movies.iloc[2,3], 
                             poster1=top_movies.iloc[0,5], poster2=top_movies.iloc[1,5], poster3=top_movies.iloc[2,5],
