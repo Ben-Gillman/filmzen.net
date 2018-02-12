@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+
+
 {% block page_content %}    
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  
   <div class="welcome">
   
     <p>Welcome to FilmZen</p>
