@@ -10,6 +10,10 @@ video {
     vertical-align: bottom;
 }
 
+.welcome {
+    background-color: #ccc;
+}
+
 .control-label {
     text-align: left;
     display: block;
@@ -32,6 +36,11 @@ video {
     display: none;
 }
 
+.recommendation-intro {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
 .loading-gif {
     display: none;
 }
@@ -52,3 +61,4 @@ video {
     width: 50%;
     margin: 0 auto;
 }
+

@@ -3,18 +3,19 @@
 
 {% block page_content %}    
   <div class="welcome">
-    <p>Welcome to FilmZen</p>
-  </div> <!-- END Welcome -->
-
-  <div class="page-title">
-    <p>Enter a movie below and receive 3 fresh recommendations!</p>
-  </div> <!-- END page-title -->
   
-  <div class="movie-form row">
-    <div class="col-md-12">
-      {{ wtf.quick_form(movieForm) }}
-    </div>
-  </div> <!-- END movie form -->
+    <p>Welcome to FilmZen</p>
+    <div class="page-title">
+      <p>Enter a movie below and receive 3 fresh recommendations!</p>
+    </div> <!-- END page-title -->
+    
+    <div class="movie-form row">
+      <div class="col-md-12">
+        {{ wtf.quick_form(movieForm) }}
+      </div>
+    </div> <!-- END movie form -->
+  
+  </div> <!-- END Welcome -->
 
   <div class="loading-gif row">
     <p> Finding the best movies for you...</p>
