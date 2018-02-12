@@ -47,3 +47,8 @@ video {
 #feedback-thanks.is-submitted {
     display: inline;
 }
+
+#movieName {
+    width: 50%;
+    margin: 0 auto;
+}

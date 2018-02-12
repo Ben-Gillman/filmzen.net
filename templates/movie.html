@@ -3,7 +3,7 @@
 
 {% block page_content %}    
   <div class="welcome">
-    <p>Welcome to Seemless Movies</p>
+    <p>Welcome to FilmZen</p>
   </div> <!-- END Welcome -->
 
   <div class="page-title">
@@ -79,7 +79,7 @@
   {% if error %}
     {% if likedmovie %}
       <div class="error row">
-        <p> Not enough data for {{ likedmovie }} to make a recommendation. </p>
+        <p> Not enough data for {{ likedMovie }} to make a recommendation. </p>
         <p> Please try a searching for a different movie. </p>
       </div>
     {% else %}
@@ -105,7 +105,7 @@
 
   <footer class="footer">
     {% if movie1 != 0 and movie1 != None %}
-      <p> {{ movie_count }} other user(s) liked {{ likedmovie }}. </p>
+      <p> {{ movie_count }} other user(s) liked {{ likedMovie }}. </p>
     {% endif %}
       <p> You have visited this page {{ count }} times </p>
   </footer> <!-- END footer -->

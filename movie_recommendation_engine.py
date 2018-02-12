@@ -15,7 +15,6 @@ import movie_scraping as movscrp
 def get_movie_id(movie_name, con):
     sql_string = "select movieId, title from movie_master;"
     movie_master = pd.read_sql_query(sql_string, con)
-    # TODO if no movie is found, prompt the user for another name 
     movie_name = process.extractOne(movie_name.lower(), 
                                     movie_master.iloc[:,1].str.lower(), 
                                     scorer=fuzz.ratio,
