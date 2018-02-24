@@ -62,3 +62,10 @@ video {
     margin: 0 auto;
 }
 
+.feedback-form.new-rec {
+    display: none;
+}
+
+.footer.new-rec {
+    display: none;
+}

@@ -55,7 +55,7 @@ def movie():
 
         movie_id = movrec.get_movie_id(movie_name, db.get_engine())
         if movie_id == -1:
-            return render_template('movie.html', form=movie_form, error=True)
+            return render_template('movie.html', movieForm=movie_form, feedbackForm=feedback_form, error=True)
 
         session['print_movie_name'] = movrec.get_print_movie_name(movie_id, db.get_engine())
         session['movie_count'] = UserInput.query.filter_by(likedMovie=session.get('print_movie_name', None)).count()
@@ -70,7 +70,7 @@ def movie():
             genome_similarity = movrec.get_genomes(movie_id, db.get_engine())
             top_movies = movrec.calculate_scores(liked_rated, genome_similarity, db.get_engine())
             if len(top_movies) < 3:
-                return render_template('movie.html', movie1=0, form=movie_form, 
+                return render_template('movie.html', movie1=0, movieForm=movie_form, feedbackForm=feedback_form, 
                                         name=session.get('print_movie_name', None), error=True, count=session['count'])
             imdb_media = movscrp.get_media_links(top_movies['imdbId'])
             top_movies = pd.concat([top_movies, imdb_media], axis=1)
