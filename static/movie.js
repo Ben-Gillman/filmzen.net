@@ -13,7 +13,7 @@ const loaded = () => {
         }
         recIntro.classList.add('new-rec');
         feedbackForm.classList.add('new-rec');
-        footer.classList.add('new-rec');
+        otherLikes.classList.add('new-rec');
     })
 
     let thanks = document.querySelector('#feedback-thanks');
