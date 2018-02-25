@@ -11,7 +11,8 @@ video {
 }
 
 .welcome {
-    background-color: #ccc;
+    padding: 15px;
+    background-color: #b4f29a;
 }
 
 .control-label {
@@ -27,6 +28,21 @@ video {
     text-align: center;
 }*/
 
+.loading-gif {
+    display: none;
+}
+
+.loading-gif.is-submitted {
+    display: inline;
+}
+
+.title {
+    font-size: 16px;
+}
+
+.recommendation {
+    padding-bottom: 20px;
+}
 
 .recommendation.new-rec {
     display: none;
@@ -41,14 +57,12 @@ video {
     padding-bottom: 15px;
 }
 
-.loading-gif {
-    display: none;
-}
+.description {
+    display: inline-block;
+    width: 20em;
+    text-align: center;
 
-.loading-gif.is-submitted {
-    display: inline;
 }
-
 #feedback-thanks {
     display: none;
 }
@@ -62,10 +76,17 @@ video {
     margin: 0 auto;
 }
 
+.other-likes-count.new-rec {
+    display: none;
+}
+
+.feedback-form {
+    padding: 20px;
+    background-color: #ccc;
+}
+
 .feedback-form.new-rec {
     display: none;
 }
 
-.footer.new-rec {
-    display: none;
-}
+

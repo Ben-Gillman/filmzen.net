@@ -3,7 +3,7 @@ const loaded = () => {
     let recContent = document.querySelectorAll('.recommendation');
     let recIntro = document.querySelector('.recommendation-intro');
     let feedbackForm = document.querySelector('.feedback-form');
-    let footer = document.querySelector('.footer');
+    let otherLikes = document.querySelector('.other-likes-count');
     let movieBtn = document.querySelector('#submitMovie');
 
     movieBtn.addEventListener('click', event => {
