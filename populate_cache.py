@@ -29,7 +29,7 @@ if __name__ == '__main__':
     movies = pd.read_sql_query("SELECT movieId from movie_master", con)
     
     start_time = time.time()
-    for movie_id in movies.values[0:10]:
+    for movie_id in movies.values[155:300]:
         movie_id = movie_id[0] 
         print(movie_id)
     
