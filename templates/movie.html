@@ -29,6 +29,7 @@
   {% if movie1 != 0 and movie1 != None %}
     <div class="recommendation-intro">
       <p> Top 3 movies for you since you like {{ likedMovie }}</p>
+      <p> {{ movie_count }} other user(s) searched for {{ likedMovie }} </p>
     </div> <!-- END recommendation-intro -->
 
     <div class="recommendation row">            
@@ -95,12 +96,6 @@
       </div> <!-- END ERROR MSG -->
     {% endif %}
   {% endif %}
-
-  <div class="other-likes-count">
-    {% if movie1 != 0 and movie1 != None %}
-      <p> {{ movie_count }} other user(s) liked {{ likedMovie }} </p>
-    {% endif %}
-  </div> <!-- END other-likes-count -->
 
   {% if (movie1 != 0 and movie1 != None) or error %}
     <div class="feedback-form row">

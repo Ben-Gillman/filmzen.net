@@ -41,7 +41,7 @@ video {
 }
 
 .recommendation {
-    padding-bottom: 20px;
+    padding-bottom: 30px;
 }
 
 .recommendation.new-rec {
@@ -74,10 +74,6 @@ video {
 #movieName {
     width: 50%;
     margin: 0 auto;
-}
-
-.other-likes-count.new-rec {
-    display: none;
 }
 
 .feedback-form {

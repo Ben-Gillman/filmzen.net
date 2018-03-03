@@ -3,7 +3,6 @@ const loaded = () => {
     let recContent = document.querySelectorAll('.recommendation');
     let recIntro = document.querySelector('.recommendation-intro');
     let feedbackForm = document.querySelector('.feedback-form');
-    let otherLikes = document.querySelector('.other-likes-count');
     let movieBtn = document.querySelector('#submitMovie');
 
     movieBtn.addEventListener('click', event => {
@@ -13,7 +12,6 @@ const loaded = () => {
         }
         recIntro.classList.add('new-rec');
         feedbackForm.classList.add('new-rec');
-        otherLikes.classList.add('new-rec');
     })
 
     let thanks = document.querySelector('#feedback-thanks');
