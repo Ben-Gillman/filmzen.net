@@ -18,7 +18,7 @@ def get_movie_id(movie_name, con):
     movie_name = process.extractOne(movie_name.lower(), 
                                     movie_master.iloc[:,1].str.lower(), 
                                     scorer=fuzz.ratio,
-                                    score_cutoff=20)[0]
+                                    score_cutoff=25)[0]
     if movie_name == None: return -1
 
     movieId = movie_master.loc[movie_master.loc[:,'title'].str.lower()==movie_name,'movieId']\
