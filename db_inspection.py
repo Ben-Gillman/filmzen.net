@@ -9,6 +9,9 @@ Inspecting / Creating SQLite3 database for flask application
 import pandas as pd
 import sqlite3
 
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+
 # Inspect Tables
 con = sqlite3.connect("C:\\Users\Ben\Documents\movie_recs\data.sqlite3")
 cursor = con.cursor()
